@@ -7,6 +7,9 @@ $listener.Start()
 try {
     while ($true) {
         $client = $listener.AcceptTcpClient()
+        # Um erro em uma requisição (ex.: navegador fecha a conexão no meio) não derruba o servidor
+        try {
+        $client.ReceiveTimeout = 5000
         $stream = $client.GetStream()
         $reader = [IO.StreamReader]::new($stream, [Text.Encoding]::ASCII, $false, 1024, $true)
         $requestLine = $reader.ReadLine()
@@ -33,6 +36,7 @@ try {
                 '.jpg'  { 'image/jpeg' }
                 '.jpeg' { 'image/jpeg' }
                 '.webp' { 'image/webp' }
+                '.ico'  { 'image/x-icon' }
                 default { 'application/octet-stream' }
             }
             $bytes = [IO.File]::ReadAllBytes($candidate)
@@ -42,8 +46,13 @@ try {
         $headerBytes = [Text.Encoding]::ASCII.GetBytes($header)
         $stream.Write($headerBytes, 0, $headerBytes.Length)
         $stream.Write($bytes, 0, $bytes.Length)
-        $stream.Close()
-        $client.Close()
+        } catch {
+            # ignora a requisição com problema e segue atendendo as próximas
+        } finally {
+            if ($stream) { $stream.Dispose() }
+            $client.Close()
+            $stream = $null
+        }
     }
 } finally {
     $listener.Stop()
