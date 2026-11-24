@@ -118,21 +118,30 @@
       ['#nome', '#curso', '#faculdade'].forEach(s => $(s).addEventListener('input', sync));
       document.querySelectorAll('input[name=genero]').forEach(r => r.addEventListener('change', sync));
 
-      /* Recorta no formato do cartão (4:5, 1080x1350, alta qualidade): centraliza na horizontal, puxa para cima (rosto) e salva em JPEG */
+      /* Recorta no formato do cartão (4:5, 600x750: nítida no cartão, inclusive em telas de alta resolução, e leve para o limite de transferência do Supabase): centraliza na horizontal, puxa para cima (rosto) e salva em JPEG */
       function toCard(file) {
         return new Promise((resolve, reject) => {
           const img = new Image();
           img.onload = () => {
-            const W = 1080, H = 1350, r = W / H;
+            const W = 600, H = 750, r = W / H;
             let sw = img.naturalWidth, sh = img.naturalHeight, sx = 0, sy = 0;
             if (sw / sh > r) { const nw = sh * r; sx = (sw - nw) / 2; sw = nw; }
             else { const nh = sw / r; sy = (sh - nh) * 0.3; sh = nh; }
-            const c = document.createElement('canvas'); c.width = W; c.height = H;
-            const ctx = c.getContext('2d'); ctx.imageSmoothingQuality = 'high';
-            ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H);
-            ctx.drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
+            /* Reduz pela metade em etapas até chegar perto do tamanho final: evita foto serrilhada */
+            const canvas = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d'); x.imageSmoothingEnabled = true; x.imageSmoothingQuality = 'high'; return [c, x]; };
+            let w = Math.round(sw), h = Math.round(sh);
+            let [step, sctx] = canvas(w, h);
+            sctx.fillStyle = '#fff'; sctx.fillRect(0, 0, w, h);
+            sctx.drawImage(img, sx, sy, sw, sh, 0, 0, w, h);
+            while (w / 2 >= W) {
+              const [next, nctx] = canvas(Math.round(w / 2), Math.round(h / 2));
+              nctx.drawImage(step, 0, 0, w, h, 0, 0, next.width, next.height);
+              step = next; w = next.width; h = next.height;
+            }
+            const [c, ctx] = canvas(W, H);
+            ctx.drawImage(step, 0, 0, w, h, 0, 0, W, H);
             URL.revokeObjectURL(img.src);
-            c.toBlob(b => b ? resolve(b) : reject(new Error('Não consegui processar a foto.')), 'image/jpeg', 0.92);
+            c.toBlob(b => b ? resolve(b) : reject(new Error('Não consegui processar a foto.')), 'image/jpeg', 0.82);
           };
           img.onerror = () => { URL.revokeObjectURL(img.src); reject(new Error('Não consegui abrir essa foto. Use JPG, PNG ou WEBP.')); };
           img.src = URL.createObjectURL(file);

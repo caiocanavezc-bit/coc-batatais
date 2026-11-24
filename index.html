@@ -168,7 +168,7 @@
     tabs.forEach((tab,i)=>{tab.addEventListener('click',()=>selectTab(tab));tab.addEventListener('keydown',e=>{const step={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[e.key];if(step){e.preventDefault();selectTab(tabs[(i+step+tabs.length)%tabs.length],true)}else if(e.key==='Home'){e.preventDefault();selectTab(tabs[0],true)}else if(e.key==='End'){e.preventDefault();selectTab(tabs[tabs.length-1],true)}})});
 
 
-    CocMural.mount($('#wall'),{limit:30,onEmpty:el=>{el.innerHTML='<p class="mq-empty">Em breve, os aprovados de 2026 aparecem aqui.</p>'}});
+    CocMural.mount($('#wall'),{limit:12,onEmpty:el=>{el.innerHTML='<p class="mq-empty">Em breve, os aprovados de 2026 aparecem aqui.</p>'}});
 
     $('#gallery').innerHTML=spaces.map((sp,i)=>`<figure class="space photo-fill${i===0?' big':''}"><div class="media-shell" data-label="Foto: ${sp.nome}&#10;${sp.foto}"><img src="${sp.foto}" alt="${sp.nome} do Colégio COC Batatais" width="800" height="600" loading="lazy" decoding="async"></div><figcaption>${sp.nome}</figcaption></figure>`).join('');
     $('#voices').innerHTML=testimonials.map(t=>`<figure class="voice reveal"><blockquote>“${todo(t.texto)}”</blockquote><figcaption><strong>${todo(t.nome)}</strong><span>${todo(t.rel)}</span></figcaption></figure>`).join('');

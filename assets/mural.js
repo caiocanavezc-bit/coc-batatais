@@ -24,7 +24,7 @@
   function card(a) {
     const status = a.genero === 'f' ? 'Aprovada!' : 'Aprovado!';
     const alt = `${a.nome}, ${a.genero === 'f' ? 'aprovada' : 'aprovado'} em ${a.curso} na ${a.faculdade}`;
-    return `<article class="mq-card"><div class="mq-photo"><img src="${esc(photoUrl(a.foto_path))}" alt="${esc(alt)}" width="800" height="1000" loading="lazy" decoding="async"></div>`
+    return `<article class="mq-card"><div class="mq-photo"><img src="${esc(photoUrl(a.foto_path))}" alt="${esc(alt)}" width="600" height="750" loading="lazy" decoding="async"></div>`
       + `<div class="mq-cap"><span class="mq-name">${esc(a.nome)}</span><span class="mq-pill">${status}</span>`
       + `<span class="mq-course">${esc(a.curso)}</span><span class="mq-inst">${esc(a.faculdade)}</span></div></article>`;
   }
