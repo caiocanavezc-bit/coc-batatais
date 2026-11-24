@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR" class="mural-page">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mural dos aprovados | Colégio COC Batatais</title>
+  <meta name="description" content="Alunos do Colégio COC Batatais aprovados nos vestibulares: nome, curso e faculdade de cada aprovação.">
+  <meta name="theme-color" content="#07451f">
+  <!-- VERSÃO DE TESTE: remover a linha abaixo quando o site for para a hospedagem definitiva -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta property="og:title" content="Mural dos aprovados | Colégio COC Batatais">
+  <meta property="og:description" content="Alunos do COC Batatais aprovados nos vestibulares.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:image" content="assets/og-image.jpg">
+  <link rel="icon" type="image/svg+xml" href="assets/logo/simbolo-coc.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Montserrat:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="stylesheet" href="assets/mural.css">
+</head>
+<body>
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+  <header class="site-header"><div class="container nav"><a class="brand" href="index.html" aria-label="Colégio COC Batatais, página inicial"><img src="assets/logo/logo-coc-batatais.svg" alt="" width="1244" height="440"></a><nav class="navlinks" id="navlinks" aria-label="Navegação principal"><a href="index.html#escola">A escola</a><a href="index.html#segmentos">Segmentos</a><a href="index.html#bolsas">Matrícula e bolsas</a><a href="aprovados.html" aria-current="page">Resultados</a><a href="index.html#contato">Contato</a><a href="colaboradores.html">Equipe</a><a class="btn btn-green btn-caps" href="index.html#contato">Agende uma visita</a></nav><button class="menu-btn" aria-label="Abrir menu" aria-expanded="false" aria-controls="navlinks"><span></span><span></span></button></div></header>
+
+  <main id="conteudo">
+    <section class="page-hero page-hero-mural"><div class="container"><h1>Mural dos aprovados</h1><p>Alunos do COC Batatais aprovados nos vestibulares. A cada nova aprovação, mais uma foto entra no mural.</p><span class="mural-count" id="count" hidden></span></div></section>
+    <section class="mural-wall" aria-label="Alunos aprovados">
+      <div id="mural"></div>
+      <p class="mural-hint container" id="hint" hidden>Passe o mouse ou toque no mural para pausar.</p>
+    </section>
+    <section class="mural-cta container"><h2>A próxima aprovação pode ser a sua</h2><p>Conheça o Ensino Médio e o Terceirão do COC Batatais.</p><a class="btn btn-green" href="index.html#segmentos">Conheça o Ensino Médio</a></section>
+  </main>
+
+  <footer class="site-footer"><div class="container foot"><a class="brand" href="index.html" aria-label="Colégio COC Batatais, página inicial"><img src="assets/logo/logo-coc-batatais-branco.svg" alt="" width="1244" height="440" loading="lazy" decoding="async"></a><span class="copy">© 2026 Colégio COC Batatais. Escola parceira do Sistema de Ensino COC.</span><nav class="f-links" aria-label="Rodapé"><a href="politica-de-privacidade.html">Política de Privacidade</a><span>Desenvolvido por <a href="https://www.instagram.com/canavezz/" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Caio Canavez">Caio Canavez</a></span></nav></div></footer>
+
+  <script src="assets/supabase-config.js"></script>
+  <script src="assets/mural.js"></script>
+  <script>
+    CocMural.mount(document.getElementById('mural'), {
+      onEmpty: el => { el.innerHTML = '<p class="mq-empty container">Em breve, os aprovados aparecem aqui.</p>'; }
+    }).then(rows => {
+      if (!rows.length) return;
+      const count = document.getElementById('count');
+      count.textContent = rows.length === 1 ? '1 aprovação' : `${rows.length} aprovações`;
+      count.hidden = false;
+      document.getElementById('hint').hidden = false;
+    });
+  </script>
+  <script src="assets/js/site.js" defer></script>
+</body>
+</html>
