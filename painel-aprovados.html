@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="pt-BR" class="panel-page logged-out">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Painel dos aprovados | Colégio COC Batatais</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#07451f">
+  <link rel="icon" type="image/svg+xml" href="assets/logo/simbolo-coc.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Montserrat:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="stylesheet" href="assets/mural.css">
+</head>
+<body>
+  <header class="panel-top"><div class="container"><a href="index.html" aria-label="Ir para o site"><img src="assets/logo/logo-coc-batatais-branco.svg" alt="Colégio COC Batatais" width="1244" height="440"></a><div class="panel-who" id="who" hidden><span id="who-mail"></span><button class="btn btn-line" id="logout" type="button">Sair</button></div></div></header>
+
+  <main class="container panel-main">
+    <h1>Painel dos aprovados</h1>
+    <p class="panel-sub">Cadastre cada aluno aprovado. Ele aparece no <a href="aprovados.html" target="_blank" rel="noopener">mural do site</a> na hora.</p>
+
+    <p class="msg err" id="setup" hidden>O painel ainda não está conectado ao Supabase. Preencha o arquivo assets/supabase-config.js (passo a passo em supabase/LEIA-ME.md).</p>
+
+    <!-- Login -->
+    <form class="panel-card panel-login" id="login" hidden>
+      <p class="msg err" id="login-msg" hidden></p>
+      <div class="field"><label for="email">E-mail</label><input type="email" id="email" autocomplete="username" required></div>
+      <div class="field"><label for="senha">Senha</label><input type="password" id="senha" autocomplete="current-password" required></div>
+      <button class="btn btn-green" type="submit">Entrar</button>
+    </form>
+
+    <!-- Cadastro -->
+    <section id="admin" hidden>
+      <div class="panel-grid">
+        <form class="panel-card" id="form" novalidate>
+          <p class="msg" id="form-msg" hidden></p>
+          <div class="field">
+            <span class="field-label">Foto</span>
+            <label class="drop" id="drop"><input type="file" id="foto" accept="image/jpeg,image/png,image/webp"><span><b>Escolher foto</b> ou arrastar aqui</span><small id="foto-name">De preferência vertical, do peito para cima. O site recorta no formato do cartão.</small></label>
+          </div>
+          <div class="field"><label for="nome">Nome do aluno</label><input type="text" id="nome" maxlength="80" placeholder="Ex.: Maria Clara" required></div>
+          <fieldset class="field"><legend>Aparece como</legend><div class="choices"><label><input type="radio" name="genero" value="f" required> Aprovada!</label><label><input type="radio" name="genero" value="m"> Aprovado!</label></div></fieldset>
+          <div class="field"><label for="curso">Curso</label><input type="text" id="curso" maxlength="80" placeholder="Ex.: Odontologia" required></div>
+          <div class="field"><label for="faculdade">Faculdade</label><input type="text" id="faculdade" maxlength="80" list="faculdades" placeholder="Ex.: UNAERP" required>
+            <datalist id="faculdades"><option value="USP"><option value="UNICAMP"><option value="UNESP"><option value="UFSCar"><option value="UNIFESP"><option value="UFU"><option value="UNAERP"><option value="UNIFRAN"><option value="Barão de Mauá"><option value="Moura Lacerda"><option value="FAMERP"><option value="PUC-Campinas"><option value="Mackenzie"><option value="Insper"><option value="FGV"></datalist></div>
+          <button class="btn btn-green" type="submit" id="save">Publicar no mural</button>
+        </form>
+        <aside class="panel-preview" aria-label="Prévia do cartão">
+          <article class="mq-card"><div class="mq-photo"><img id="pv-img" alt="" hidden></div><div class="mq-cap"><span class="mq-name" id="pv-nome">Nome do aluno</span><span class="mq-pill" id="pv-pill">Aprovado!</span><span class="mq-course" id="pv-curso">Curso</span><span class="mq-inst" id="pv-fac">Faculdade</span></div></article>
+          <small>Prévia de como o cartão fica no mural</small>
+        </aside>
+      </div>
+
+      <div class="list-head"><h2>No mural agora</h2><span id="total"></span></div>
+      <ul class="panel-list" id="list"></ul>
+      <p class="panel-links"><a href="aprovados.html" target="_blank" rel="noopener">Abrir o mural do site</a></p>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="assets/supabase-config.js"></script>
+  <script src="assets/mural.js"></script>
+  <script>
+    const $ = s => document.querySelector(s);
+    const esc = CocMural.esc;
+    const cfg = window.COC_SUPABASE || {};
+    const show = (el, text, kind) => { el.textContent = text || ''; el.className = 'msg ' + (kind || 'err'); el.hidden = !text; };
+    const DEFAULT_HINT = 'De preferência vertical, do peito para cima. O site recorta no formato do cartão.';
+
+    if (!cfg.url || !cfg.anonKey) {
+      $('#setup').hidden = false;
+    } else {
+      start(supabase.createClient(cfg.url, cfg.anonKey));
+    }
+
+    function start(sb) {
+      const nice = err => {
+        const m = String(err && (err.message || err.error_description || err)).toLowerCase();
+        if (m.includes('invalid login')) return 'E-mail ou senha incorretos.';
+        if (m.includes('email not confirmed')) return 'Este e-mail ainda não foi confirmado no Supabase.';
+        if (m.includes('row-level security') || m.includes('unauthorized') || m.includes('403')) return 'Este e-mail não tem permissão para mexer no mural. Peça para incluírem seu e-mail na lista de responsáveis.';
+        if (m.includes('failed to fetch')) return 'Sem conexão com o servidor. Confira a internet e tente de novo.';
+        return 'Algo deu errado: ' + ((err && err.message) || err);
+      };
+
+      /* ---------- Sessão ---------- */
+      function render(session) {
+        const logged = !!session;
+        document.documentElement.classList.toggle('logged-out', !logged);
+        $('#login').hidden = logged;
+        $('#admin').hidden = !logged;
+        $('#who').hidden = !logged;
+        if (logged) { $('#who-mail').textContent = session.user.email; loadList(); }
+      }
+      sb.auth.getSession().then(({ data }) => render(data.session));
+      sb.auth.onAuthStateChange((event, session) => { if (event !== 'INITIAL_SESSION') render(session); });
+
+      $('#login').addEventListener('submit', async e => {
+        e.preventDefault();
+        show($('#login-msg'), '');
+        const btn = e.submitter; if (btn) btn.disabled = true;
+        const { error } = await sb.auth.signInWithPassword({ email: $('#email').value.trim(), password: $('#senha').value });
+        if (btn) btn.disabled = false;
+        if (error) show($('#login-msg'), nice(error));
+      });
+      $('#logout').addEventListener('click', () => sb.auth.signOut());
+
+      /* ---------- Prévia ao vivo ---------- */
+      let photoBlob = null, previewUrl = null;
+      const sync = () => {
+        $('#pv-nome').textContent = $('#nome').value.trim() || 'Nome do aluno';
+        $('#pv-curso').textContent = $('#curso').value.trim() || 'Curso';
+        $('#pv-fac').textContent = $('#faculdade').value.trim() || 'Faculdade';
+        const g = document.querySelector('input[name=genero]:checked');
+        $('#pv-pill').textContent = g && g.value === 'f' ? 'Aprovada!' : 'Aprovado!';
+      };
+      ['#nome', '#curso', '#faculdade'].forEach(s => $(s).addEventListener('input', sync));
+      document.querySelectorAll('input[name=genero]').forEach(r => r.addEventListener('change', sync));
+
+      /* Recorta no formato do cartão (4:5, 600x750: nítida no cartão, inclusive em telas de alta resolução, e leve para o limite de transferência do Supabase): centraliza na horizontal, puxa para cima (rosto) e salva em JPEG */
+      function toCard(file) {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => {
+            const W = 600, H = 750, r = W / H;
+            let sw = img.naturalWidth, sh = img.naturalHeight, sx = 0, sy = 0;
+            if (sw / sh > r) { const nw = sh * r; sx = (sw - nw) / 2; sw = nw; }
+            else { const nh = sw / r; sy = (sh - nh) * 0.3; sh = nh; }
+            /* Reduz pela metade em etapas até chegar perto do tamanho final: evita foto serrilhada */
+            const canvas = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d'); x.imageSmoothingEnabled = true; x.imageSmoothingQuality = 'high'; return [c, x]; };
+            let w = Math.round(sw), h = Math.round(sh);
+            let [step, sctx] = canvas(w, h);
+            sctx.fillStyle = '#fff'; sctx.fillRect(0, 0, w, h);
+            sctx.drawImage(img, sx, sy, sw, sh, 0, 0, w, h);
+            while (w / 2 >= W) {
+              const [next, nctx] = canvas(Math.round(w / 2), Math.round(h / 2));
+              nctx.drawImage(step, 0, 0, w, h, 0, 0, next.width, next.height);
+              step = next; w = next.width; h = next.height;
+            }
+            const [c, ctx] = canvas(W, H);
+            ctx.drawImage(step, 0, 0, w, h, 0, 0, W, H);
+            URL.revokeObjectURL(img.src);
+            c.toBlob(b => b ? resolve(b) : reject(new Error('Não consegui processar a foto.')), 'image/jpeg', 0.82);
+          };
+          img.onerror = () => { URL.revokeObjectURL(img.src); reject(new Error('Não consegui abrir essa foto. Use JPG, PNG ou WEBP.')); };
+          img.src = URL.createObjectURL(file);
+        });
+      }
+      async function pick(file) {
+        if (!file) return;
+        if (!/^image\/(jpeg|png|webp)$/.test(file.type)) { show($('#form-msg'), 'Use uma foto JPG, PNG ou WEBP.'); return; }
+        try {
+          photoBlob = await toCard(file);
+          if (previewUrl) URL.revokeObjectURL(previewUrl);
+          previewUrl = URL.createObjectURL(photoBlob);
+          $('#pv-img').src = previewUrl; $('#pv-img').hidden = false;
+          $('#foto-name').textContent = file.name;
+          show($('#form-msg'), '');
+        } catch (err) { show($('#form-msg'), err.message); }
+      }
+      $('#foto').addEventListener('change', e => pick(e.target.files[0]));
+      const drop = $('#drop');
+      ['dragover', 'dragenter'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('over'); }));
+      ['dragleave', 'drop'].forEach(t => drop.addEventListener(t, () => drop.classList.remove('over')));
+      drop.addEventListener('drop', e => { e.preventDefault(); pick(e.dataTransfer.files[0]); });
+
+      /* ---------- Publicar ---------- */
+      $('#form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const nome = $('#nome').value.trim(), curso = $('#curso').value.trim(), faculdade = $('#faculdade').value.trim();
+        const g = document.querySelector('input[name=genero]:checked');
+        if (!photoBlob) return show($('#form-msg'), 'Escolha a foto do aluno.');
+        if (!nome || !g || !curso || !faculdade) return show($('#form-msg'), 'Preencha nome, Aprovada/Aprovado, curso e faculdade.');
+        const btn = $('#save'); btn.disabled = true; btn.textContent = 'Publicando...';
+        const path = `${crypto.randomUUID()}.jpg`;
+        try {
+          const up = await sb.storage.from('aprovados').upload(path, photoBlob, { contentType: 'image/jpeg', cacheControl: '31536000' });
+          if (up.error) throw up.error;
+          const ins = await sb.from('aprovados').insert({ nome, genero: g.value, curso, faculdade, foto_path: path });
+          if (ins.error) { await sb.storage.from('aprovados').remove([path]); throw ins.error; }
+          e.target.reset(); photoBlob = null; $('#pv-img').hidden = true; $('#foto-name').textContent = DEFAULT_HINT; sync();
+          show($('#form-msg'), `${nome} entrou no mural!`, 'ok');
+          loadList();
+        } catch (err) {
+          show($('#form-msg'), nice(err));
+        } finally { btn.disabled = false; btn.textContent = 'Publicar no mural'; }
+      });
+
+      /* ---------- Lista e remoção ---------- */
+      async function loadList() {
+        const { data, error } = await sb.from('aprovados').select('id,nome,genero,curso,faculdade,foto_path,created_at').order('created_at', { ascending: false });
+        if (error) { $('#list').innerHTML = `<li class="empty">${esc(nice(error))}</li>`; return; }
+        $('#total').textContent = data.length === 1 ? '1 aprovação' : `${data.length} aprovações`;
+        $('#list').innerHTML = data.length
+          ? data.map(a => `<li><img src="${esc(CocMural.photoUrl(a.foto_path))}" alt="" loading="lazy"><div><strong>${esc(a.nome)} · ${a.genero === 'f' ? 'Aprovada' : 'Aprovado'}</strong><span>${esc(a.curso)} · ${esc(a.faculdade)}</span></div><button class="del" type="button" data-id="${esc(a.id)}" data-path="${esc(a.foto_path)}" data-nome="${esc(a.nome)}">Remover</button></li>`).join('')
+          : '<li class="empty">Ninguém no mural ainda. Cadastre o primeiro aprovado acima.</li>';
+      }
+      $('#list').addEventListener('click', async e => {
+        const b = e.target.closest('.del'); if (!b) return;
+        if (!confirm(`Remover ${b.dataset.nome} do mural?`)) return;
+        b.disabled = true;
+        const { error } = await sb.from('aprovados').delete().eq('id', b.dataset.id);
+        if (error) { b.disabled = false; alert(nice(error)); return; }
+        await sb.storage.from('aprovados').remove([b.dataset.path]);
+        loadList();
+      });
+    }
+  </script>
+</body>
+</html>

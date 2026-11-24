@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR" class="team">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nossa equipe | Colégio COC Batatais</title>
+  <meta name="description" content="Conheça a equipe do Colégio COC Batatais: direção, coordenação, professores e funcionários das Unidades 1 e 2.">
+  <meta name="theme-color" content="#07451f">
+  <!-- VERSÃO DE TESTE: remover a linha abaixo quando o site for para a hospedagem definitiva -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta property="og:title" content="Nossa equipe | Colégio COC Batatais">
+  <meta property="og:description" content="Direção, coordenação, professores e funcionários das Unidades 1 e 2.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:image" content="assets/og-image.jpg">
+  <link rel="icon" type="image/svg+xml" href="assets/logo/simbolo-coc.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Montserrat:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+  <header class="site-header"><div class="container nav"><a class="brand" href="index.html" aria-label="Colégio COC Batatais, página inicial"><img src="assets/logo/logo-coc-batatais.svg" alt="" width="1244" height="440"></a><nav class="navlinks" id="navlinks" aria-label="Navegação principal"><a href="index.html#escola">A escola</a><a href="index.html#segmentos">Segmentos</a><a href="index.html#bolsas">Matrícula e bolsas</a><a href="index.html#aprovados">Resultados</a><a href="index.html#contato">Contato</a><a href="colaboradores.html" aria-current="page">Equipe</a><a class="btn btn-green btn-caps" href="index.html#contato">Agende uma visita</a></nav><button class="menu-btn" aria-label="Abrir menu" aria-expanded="false" aria-controls="navlinks"><span></span><span></span></button></div></header>
+
+  <main id="conteudo">
+    <section class="page-hero"><div class="container"><h1>Nossa equipe</h1><div class="unit-tabs" role="tablist" aria-label="Unidades" id="unit-tabs"></div></div></section>
+    <div class="container" id="units"></div>
+    <div class="container"><section class="join" aria-labelledby="join-title"><h2 id="join-title">Trabalhe no COC Batatais</h2><p>Mande seu currículo para <span id="cv-mail"></span> dizendo a unidade e a área em que quer trabalhar.</p></section></div>
+  </main>
+
+  <footer class="site-footer"><div class="container foot"><a class="brand" href="index.html" aria-label="Colégio COC Batatais, página inicial"><img src="assets/logo/logo-coc-batatais-branco.svg" alt="" width="1244" height="440" loading="lazy" decoding="async"></a><span class="copy">© 2026 Colégio COC Batatais. Escola parceira do Sistema de Ensino COC.</span><nav class="f-links" aria-label="Rodapé"><a href="politica-de-privacidade.html">Política de Privacidade</a><span>Desenvolvido por <a href="https://www.instagram.com/canavezz/" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Caio Canavez">Caio Canavez</a></span></nav></div></footer>
+
+  <script>
+    /* ==== EQUIPE: edite aqui ====
+       Textos entre [colchetes] aparecem destacados em amarelo: troque pelos dados reais.
+       P(nome, cargo, disciplina ou turma, foto)
+         nome: um nome ou uma lista, ex.: ['Ana Lima','João Prado'] (vários professores na mesma disciplina).
+         foto: caminho da imagem, ex.: 'assets/equipe/maria-silva.jpg' (retrato em pé, 3:4).
+       Grupos com formato:'fotos' mostram retratos (com destaque:true, maiores: direção e coordenação).
+       Embaixo do nome aparece a disciplina ou a turma; sem elas, o cargo.
+       Quem não tiver foto aparece só com nome e cargo. Grupos sem formato viram uma lista (equipe de apoio).
+       Os demais viram um quadro: disciplina, turma ou cargo à esquerda e o nome à direita,
+       com a foto pequena ao lado do nome quando houver.
+       Publique nome e foto de cada pessoa somente com autorização dela (LGPD). */
+    const EMAIL_CURRICULO='';   // ex.: 'rh@cocbatatais.com.br'
+    const P=(nome,cargo,disciplina='',foto='')=>({nome,cargo,disciplina,foto});
+    const UNIDADES=[
+      {id:'unidade-1',nome:'Unidade 1',resumo:'Educação Infantil',endereco:'Rua Major Antônio Cândido, 151 · Centro',mapa:'https://share.google/PtpCFJNDmwvgeJHQX',
+        grupos:[
+          {id:'u1-direcao',titulo:'Direção e coordenação',formato:'fotos',destaque:true,pessoas:[P('[Nome]','Direção'),P('[Nome]','Coordenação pedagógica')]},
+          {id:'u1-professores',titulo:'Professores',formato:'fotos',pessoas:[P('[Nome]','Professora','[Turma]'),P('[Nome]','Professora','[Turma]'),P('[Nome]','Professora','[Turma]'),P('[Nome]','Professor(a)','Educação Física')]},
+          {id:'u1-apoio',titulo:'Apoio',pessoas:[P('[Nome]','Secretaria'),P('[Nome]','Auxiliar de classe'),P('[Nome]','Serviços gerais')]}
+        ]},
+      {id:'unidade-2',nome:'Unidade 2',resumo:'Fundamental e Ensino Médio',endereco:'Rua Prudente de Morais, 143 · Centro',mapa:'https://share.google/SqHsHTZAGZyHKakDN',
+        grupos:[
+          {id:'u2-direcao',titulo:'Direção e coordenação',formato:'fotos',destaque:true,pessoas:[P('[Nome]','Direção'),P('[Nome]','Coordenação do Fundamental I'),P('[Nome]','Coordenação do Fundamental II e do Ensino Médio')]},
+          {id:'u2-fund1',titulo:'Fundamental I',subtitulo:'1º ao 5º ano',formato:'fotos',pessoas:[P('[Nome]','Professora','1º ano'),P('[Nome]','Professora','2º ano'),P('[Nome]','Professora','3º ano'),P('[Nome]','Professora','4º ano'),P('[Nome]','Professora','5º ano')]},
+          {id:'u2-fund2',titulo:'Fundamental II',subtitulo:'6º ao 9º ano',formato:'fotos',pessoas:[P('[Nome]','Professor(a)','Língua Portuguesa'),P('[Nome]','Professor(a)','Matemática'),P('[Nome]','Professor(a)','Ciências'),P('[Nome]','Professor(a)','História'),P('[Nome]','Professor(a)','Geografia'),P('[Nome]','Professor(a)','Inglês')]},
+          {id:'u2-medio',titulo:'Ensino Médio',subtitulo:'1ª à 3ª série',formato:'fotos',pessoas:[P('[Nome]','Professor(a)','Língua Portuguesa'),P('[Nome]','Professor(a)','Matemática'),P('[Nome]','Professor(a)','Física'),P('[Nome]','Professor(a)','Química'),P('[Nome]','Professor(a)','Biologia'),P('[Nome]','Professor(a)','História')]},
+          {id:'u2-apoio',titulo:'Administração e apoio',pessoas:[P('[Nome]','Secretaria'),P('[Nome]','Financeiro'),P('[Nome]','Inspetoria'),P('[Nome]','Serviços gerais')]}
+        ]}
+    ];
+
+    const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    const todo=s=>esc(s).replace(/\[([^\]]+)\]/g,'<span class="todo">[$1]</span>');
+    const isTodo=s=>!Array.isArray(s)&&/^\[.*\]$/.test(s.trim());
+    const names=n=>Array.isArray(n)?n.map(x=>`<span>${todo(x)}</span>`).join(''):todo(n);
+        const img=p=>p.foto?`<img src="${esc(p.foto)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:'';
+    const portrait=p=>`<li${!p.foto&&!isTodo(p.nome)?' class="no-photo"':''}>${p.foto?`<div class="portrait-photo">${img(p)}</div>`:isTodo(p.nome)?'<div class="portrait-photo"><span class="todo">[foto]</span></div>':''}<strong>${names(p.nome)}</strong><span class="portrait-role">${todo(p.disciplina||p.cargo)}</span></li>`;
+    const row=p=>`<li><span class="board-label">${todo(p.disciplina||p.cargo)}</span><span class="board-who">${img(p)}<span>${names(p.nome)}</span></span></li>`;
+    const groupHead=g=>`<div class="group-head"><h3>${esc(g.titulo)}</h3>${g.subtitulo?`<p class="group-sub">${esc(g.subtitulo)}</p>`:''}</div>`;
+    const group=g=>`<div class="group" id="${g.id}">${groupHead(g)}${g.formato==='fotos'?`<ul class="portraits${g.destaque?'':' sm'}">${g.pessoas.map(portrait).join('')}</ul>`:`<ul class="board">${g.pessoas.map(row).join('')}</ul>`}</div>`;
+    const address=u=>u.endereco?`${esc(u.endereco)}, Batatais/SP${u.mapa?`<a class="link" href="${esc(u.mapa)}" target="_blank" rel="noopener noreferrer">Como chegar</a>`:''}`:todo(`[Endereço da ${u.nome}]`);
+
+    document.getElementById('unit-tabs').innerHTML=UNIDADES.map((u,i)=>`<button class="unit-tab" role="tab" id="tab-${u.id}" aria-controls="${u.id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}"><b>${esc(u.nome)}</b><small>${esc(u.resumo)}</small></button>`).join('');
+    document.getElementById('units').innerHTML=UNIDADES.map((u,i)=>{
+      const fotos=u.grupos.filter(g=>g.formato==='fotos'),quadro=u.grupos.filter(g=>g.formato!=='fotos');
+      return`<section class="unit" role="tabpanel" id="${u.id}" aria-labelledby="tab-${u.id}"${i?' hidden':''}>
+      <h2 class="sr">${esc(u.nome)}: ${esc(u.resumo)}</h2><p class="unit-addr">${address(u)}</p>
+      ${u.grupos.length>3?`<nav class="jump" aria-label="Grupos da ${esc(u.nome)}">${u.grupos.map(g=>`<a href="#${g.id}">${esc(g.titulo)}</a>`).join('')}</nav>`:''}
+      ${fotos.map(group).join('')}<div class="boards">${quadro.map(group).join('')}</div>
+    </section>`}).join('');
+    document.getElementById('cv-mail').innerHTML=EMAIL_CURRICULO?`<a class="link" href="mailto:${esc(EMAIL_CURRICULO)}">${esc(EMAIL_CURRICULO)}</a>`:todo('[e-mail para currículos]');
+
+    const tabs=[...document.querySelectorAll('.unit-tab')];
+    const select=(tab,focus)=>{tabs.forEach(t=>{const on=t===tab;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1;document.getElementById(t.getAttribute('aria-controls')).hidden=!on});if(focus)tab.focus();history.replaceState(null,'','#'+tab.getAttribute('aria-controls'))};
+    tabs.forEach((tab,i)=>{tab.addEventListener('click',()=>select(tab));tab.addEventListener('keydown',e=>{const step={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[e.key];if(step){e.preventDefault();select(tabs[(i+step+tabs.length)%tabs.length],true)}})});
+    /* Abre direto na unidade do link (ex.: colaboradores.html#unidade-2) */
+    const fromHash=location.hash&&document.getElementById('tab-'+location.hash.slice(1));if(fromHash)select(fromHash);
+
+  </script>
+  <script src="assets/js/site.js" defer></script>
+</body>
+</html>

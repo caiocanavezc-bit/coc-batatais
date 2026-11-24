@@ -1,0 +1,30 @@
+/* Mural dos aprovados: esteira infinita de polaroides (usada na home e em aprovados.html) */
+.mq{--mq-card:clamp(200px,22vw,250px);position:relative;overflow:hidden;padding:34px 0 40px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.mq-track{display:flex;width:max-content;animation:mq-roll var(--mq-dur,40s) linear infinite}
+.mq-group{display:flex;gap:34px;padding-right:34px}
+.mq:hover .mq-track,.mq:focus-within .mq-track,.mq.is-paused .mq-track{animation-play-state:paused}
+@keyframes mq-roll{to{transform:translateX(-50%)}}
+
+.mq-card{--tilt:-2.5deg;flex:none;width:var(--mq-card);background:#fff;padding:12px 12px 20px;border-radius:6px;box-shadow:0 24px 40px -24px rgba(6,51,26,.5);transform:rotate(var(--tilt));position:relative;transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+.mq-card:nth-child(3n+2){--tilt:2deg}
+.mq-card:nth-child(3n){--tilt:-1deg}
+.mq-card:hover{transform:rotate(0) translateY(-4px)}
+.mq-card:before{content:"";position:absolute;top:-13px;left:50%;z-index:2;width:90px;height:26px;border-radius:3px;background:rgba(194,242,75,.78);transform:translateX(-50%) rotate(-3deg)}
+.mq-photo{aspect-ratio:4/5;border-radius:3px;overflow:hidden;background:linear-gradient(150deg,#d9ecc6,#b7d99a)}
+.mq-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.mq-cap{padding:12px 2px 0;text-align:center}
+.mq-name{display:block;font:400 1.7rem/1.05 "Caveat Brush",cursive;color:#0d7a35;overflow-wrap:anywhere}
+.mq-pill{display:inline-block;margin:8px 0;padding:5px 12px;border-radius:12px;background:#8dc63f;color:#06331a;font:900 .95rem/1 Montserrat,sans-serif;text-transform:uppercase;transform:rotate(-2deg)}
+.mq-course{display:block;font:800 .95rem/1.25 Montserrat,sans-serif;color:#07451f;text-transform:uppercase;overflow-wrap:anywhere}
+.mq-inst{display:block;font-size:.88rem;font-weight:700;color:#5b7264;overflow-wrap:anywhere}
+
+.mq-empty{padding:28px 0;color:#5b7264;font-weight:700}
+
+/* Quem prefere menos movimento: lista parada, rolando para o lado com o dedo ou a roda do mouse */
+@media(prefers-reduced-motion:reduce){
+  .mq{overflow-x:auto;-webkit-mask-image:none;mask-image:none;scroll-snap-type:x mandatory}
+  .mq-track{animation:none}
+  .mq-group[aria-hidden="true"]{display:none}
+  .mq-card{scroll-snap-align:start}
+}
+@media(max-width:620px){.mq{--mq-card:200px;padding:28px 0 32px}.mq-group{gap:24px;padding-right:24px}.mq-name{font-size:1.5rem}}
