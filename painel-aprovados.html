@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Painel dos aprovados | Colégio COC Batatais</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#07451f">
+  <link rel="icon" type="image/svg+xml" href="assets/logo/simbolo-coc.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Montserrat:wght@700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mural.css">
+  <style>
+    :root{--ink:#06331a;--deep:#07451f;--green:#0d7a35;--lime:#8dc63f;--neon:#c2f24b;--mint:#eaf5dc;--cream:#f6f8ef;--white:#fff;--muted:#5b7264;--line:#dbe6d1;--r:8px;--ease:cubic-bezier(.2,.7,.2,1)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:140px}body{margin:0;background:var(--cream);color:#1d3a2a;font:16px/1.6 Nunito,sans-serif}a{color:inherit;text-decoration:none}button{font:inherit}h1,h2,h3,p{margin-top:0}h1,h2,h3{font-family:Montserrat,sans-serif;font-weight:900;letter-spacing:-.02em;line-height:1.1;color:var(--deep)}.container{width:calc(100% - 40px);margin-inline:auto}@media(min-width:951px){.container{width:calc(100% - 96px)}}.skip{position:fixed;z-index:999;top:8px;left:8px;background:var(--neon);color:var(--ink);padding:10px 14px;border-radius:var(--r);transform:translateY(-150%)}.skip:focus{transform:none}:focus-visible{outline:3px solid var(--neon);outline-offset:3px}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:999px;font:800 14px Montserrat,sans-serif;transition:background-color .2s var(--ease)}.btn-green{background:var(--green);color:#fff}.btn-green:hover{background:var(--deep)}
+    .top{background:var(--deep);color:#fff}.top .container{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:70px}.top img{display:block;height:40px;width:auto}.top .who{display:flex;align-items:center;gap:14px;font-size:.9rem;color:#b9d4c0}
+    .btn-line{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.35);min-height:40px;padding:0 16px;cursor:pointer}.btn-line:hover{border-color:#fff}
+    .btn-green{border:0;cursor:pointer}.btn-green:disabled{opacity:.6;cursor:wait}
+    main{padding:36px 0 60px}h1{font-size:clamp(1.8rem,3.4vw,2.4rem);margin-bottom:6px}.sub{color:var(--muted);margin:0 0 28px}.sub a{color:var(--green);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+    .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px}
+    .login{max-width:420px}
+    .field{display:grid;gap:6px;margin-bottom:16px}.field>label,.field legend,.field .lbl{font:800 13px Montserrat,sans-serif;color:var(--deep)}
+    .field input[type=text],.field input[type=email],.field input[type=password]{width:100%;min-height:46px;padding:0 14px;border:1px solid #c9d8bf;border-radius:10px;font:inherit;background:#fff}
+    .field input:focus{outline:3px solid var(--neon);outline-offset:1px;border-color:var(--green)}
+    fieldset.field{border:0;padding:0;margin:0 0 16px}.choices{display:flex;gap:10px;flex-wrap:wrap}.choices label{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border:1px solid #c9d8bf;border-radius:999px;font:700 15px Nunito,sans-serif;color:#1d3a2a;cursor:pointer}.choices input{accent-color:var(--green)}.choices label:has(input:checked){border-color:var(--green);background:var(--mint)}
+    .drop{position:relative;display:grid;place-items:center;gap:6px;min-height:120px;padding:18px;border:2px dashed #b9d99a;border-radius:12px;text-align:center;color:var(--muted);cursor:pointer;font-weight:700}.drop:hover,.drop.over{background:var(--mint)}.drop input{position:absolute;inset:0;opacity:0;cursor:pointer}.drop b{color:var(--green)}.drop:focus-within{outline:3px solid var(--neon);outline-offset:2px}
+    .grid{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:32px;align-items:start}
+    .preview{position:sticky;top:20px;padding-top:14px}.preview .mq-card{width:100%;--tilt:-1.5deg}.preview small{display:block;margin-top:22px;text-align:center;color:var(--muted);font-weight:600}
+    .msg{margin:0 0 16px;padding:12px 14px;border-radius:10px;font-weight:700}.msg.ok{background:var(--mint);color:var(--deep)}.msg.err{background:#fde7e3;color:#8a1f0c}
+    .list-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:40px 0 14px}.list-head h2{font-size:1.4rem;margin:0}.list-head span{color:var(--muted);font-weight:700}
+    .list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+    .list li{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px 10px 10px}
+    .list li.empty{display:block;padding:16px;color:var(--muted);font-weight:600}
+    .list img{width:56px;height:70px;object-fit:cover;object-position:center 30%;border-radius:6px;background:var(--mint)}
+    .list strong{display:block;color:var(--deep)}.list span{display:block;color:var(--muted);font-size:.92rem;overflow-wrap:anywhere}
+    .del{border:1px solid #e4b6ad;background:#fff;color:#8a1f0c;border-radius:999px;min-height:38px;padding:0 14px;font:800 13px Montserrat,sans-serif;cursor:pointer}.del:hover{background:#fde7e3}
+    .links{margin-top:28px;font-weight:700}.links a{color:var(--green);text-decoration:underline;text-underline-offset:3px}
+    /* Tela de login: título e formulário no centro da página */
+    body.logged-out main{min-height:calc(100vh - 70px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-bottom:12vh}
+    body.logged-out .login{width:100%;text-align:left}
+    [hidden]{display:none!important}
+    @media(max-width:820px){.grid{grid-template-columns:1fr}.preview{position:static;max-width:260px;margin:0 auto}}
+    @media(max-width:620px){.container{width:calc(100% - 32px)}.panel{padding:20px}.top .who span{display:none}}
+  </style>
+</head>
+<body>
+  <header class="top"><div class="container"><a href="index.html" aria-label="Ir para o site"><img src="assets/logo/logo-coc-batatais-branco.svg" alt="Colégio COC Batatais" width="1244" height="440"></a><div class="who" id="who" hidden><span id="who-mail"></span><button class="btn btn-line" id="logout" type="button">Sair</button></div></div></header>
+
+  <main class="container">
+    <h1>Painel dos aprovados</h1>
+    <p class="sub">Cadastre cada aluno aprovado. Ele aparece no <a href="aprovados.html" target="_blank" rel="noopener">mural do site</a> na hora.</p>
+
+    <p class="msg err" id="setup" hidden>O painel ainda não está conectado ao Supabase. Preencha o arquivo assets/supabase-config.js (passo a passo em supabase/LEIA-ME.md).</p>
+
+    <!-- Login -->
+    <form class="panel login" id="login" hidden>
+      <p class="msg err" id="login-msg" hidden></p>
+      <div class="field"><label for="email">E-mail</label><input type="email" id="email" autocomplete="username" required></div>
+      <div class="field"><label for="senha">Senha</label><input type="password" id="senha" autocomplete="current-password" required></div>
+      <button class="btn btn-green" type="submit">Entrar</button>
+    </form>
+
+    <!-- Cadastro -->
+    <section id="admin" hidden>
+      <div class="grid">
+        <form class="panel" id="form" novalidate>
+          <p class="msg" id="form-msg" hidden></p>
+          <div class="field">
+            <span class="lbl">Foto</span>
+            <label class="drop" id="drop"><input type="file" id="foto" accept="image/jpeg,image/png,image/webp"><span><b>Escolher foto</b> ou arrastar aqui</span><small id="foto-name">De preferência vertical, do peito para cima. O site recorta no formato do cartão.</small></label>
+          </div>
+          <div class="field"><label for="nome">Nome do aluno</label><input type="text" id="nome" maxlength="80" placeholder="Ex.: Maria Clara" required></div>
+          <fieldset class="field"><legend>Aparece como</legend><div class="choices"><label><input type="radio" name="genero" value="f" required> Aprovada!</label><label><input type="radio" name="genero" value="m"> Aprovado!</label></div></fieldset>
+          <div class="field"><label for="curso">Curso</label><input type="text" id="curso" maxlength="80" placeholder="Ex.: Odontologia" required></div>
+          <div class="field"><label for="faculdade">Faculdade</label><input type="text" id="faculdade" maxlength="80" list="faculdades" placeholder="Ex.: UNAERP" required>
+            <datalist id="faculdades"><option value="USP"><option value="UNICAMP"><option value="UNESP"><option value="UFSCar"><option value="UNIFESP"><option value="UFU"><option value="UNAERP"><option value="UNIFRAN"><option value="Barão de Mauá"><option value="Moura Lacerda"><option value="FAMERP"><option value="PUC-Campinas"><option value="Mackenzie"><option value="Insper"><option value="FGV"></datalist></div>
+          <button class="btn btn-green" type="submit" id="save">Publicar no mural</button>
+        </form>
+        <aside class="preview" aria-label="Prévia do cartão">
+          <article class="mq-card"><div class="mq-photo"><img id="pv-img" alt="" hidden></div><div class="mq-cap"><span class="mq-name" id="pv-nome">Nome do aluno</span><span class="mq-pill" id="pv-pill">Aprovado!</span><span class="mq-course" id="pv-curso">Curso</span><span class="mq-inst" id="pv-fac">Faculdade</span></div></article>
+          <small>Prévia de como o cartão fica no mural</small>
+        </aside>
+      </div>
+
+      <div class="list-head"><h2>No mural agora</h2><span id="total"></span></div>
+      <ul class="list" id="list"></ul>
+      <p class="links"><a href="aprovados.html" target="_blank" rel="noopener">Abrir o mural do site</a></p>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="assets/supabase-config.js"></script>
+  <script src="assets/mural.js"></script>
+  <script>
+    const $ = s => document.querySelector(s);
+    const esc = CocMural.esc;
+    const cfg = window.COC_SUPABASE || {};
+    const show = (el, text, kind) => { el.textContent = text || ''; el.className = 'msg ' + (kind || 'err'); el.hidden = !text; };
+    const DEFAULT_HINT = 'De preferência vertical, do peito para cima. O site recorta no formato do cartão.';
+
+    if (!cfg.url || !cfg.anonKey) {
+      $('#setup').hidden = false;
+    } else {
+      start(supabase.createClient(cfg.url, cfg.anonKey));
+    }
+
+    function start(sb) {
+      const nice = err => {
+        const m = String(err && (err.message || err.error_description || err)).toLowerCase();
+        if (m.includes('invalid login')) return 'E-mail ou senha incorretos.';
+        if (m.includes('email not confirmed')) return 'Este e-mail ainda não foi confirmado no Supabase.';
+        if (m.includes('row-level security') || m.includes('unauthorized') || m.includes('403')) return 'Este e-mail não tem permissão para mexer no mural. Peça para incluírem seu e-mail na lista de responsáveis.';
+        if (m.includes('failed to fetch')) return 'Sem conexão com o servidor. Confira a internet e tente de novo.';
+        return 'Algo deu errado: ' + ((err && err.message) || err);
+      };
+
+      /* ---------- Sessão ---------- */
+      function render(session) {
+        const logged = !!session;
+        document.body.classList.toggle('logged-out', !logged);
+        $('#login').hidden = logged;
+        $('#admin').hidden = !logged;
+        $('#who').hidden = !logged;
+        if (logged) { $('#who-mail').textContent = session.user.email; loadList(); }
+      }
+      sb.auth.getSession().then(({ data }) => render(data.session));
+      sb.auth.onAuthStateChange((event, session) => { if (event !== 'INITIAL_SESSION') render(session); });
+
+      $('#login').addEventListener('submit', async e => {
+        e.preventDefault();
+        show($('#login-msg'), '');
+        const btn = e.submitter; if (btn) btn.disabled = true;
+        const { error } = await sb.auth.signInWithPassword({ email: $('#email').value.trim(), password: $('#senha').value });
+        if (btn) btn.disabled = false;
+        if (error) show($('#login-msg'), nice(error));
+      });
+      $('#logout').addEventListener('click', () => sb.auth.signOut());
+
+      /* ---------- Prévia ao vivo ---------- */
+      let photoBlob = null, previewUrl = null;
+      const sync = () => {
+        $('#pv-nome').textContent = $('#nome').value.trim() || 'Nome do aluno';
+        $('#pv-curso').textContent = $('#curso').value.trim() || 'Curso';
+        $('#pv-fac').textContent = $('#faculdade').value.trim() || 'Faculdade';
+        const g = document.querySelector('input[name=genero]:checked');
+        $('#pv-pill').textContent = g && g.value === 'f' ? 'Aprovada!' : 'Aprovado!';
+      };
+      ['#nome', '#curso', '#faculdade'].forEach(s => $(s).addEventListener('input', sync));
+      document.querySelectorAll('input[name=genero]').forEach(r => r.addEventListener('change', sync));
+
+      /* Recorta no formato do cartão (4:5, 800x1000): centraliza na horizontal, puxa para cima (rosto) e salva em JPEG */
+      function toCard(file) {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => {
+            const W = 800, H = 1000, r = W / H;
+            let sw = img.naturalWidth, sh = img.naturalHeight, sx = 0, sy = 0;
+            if (sw / sh > r) { const nw = sh * r; sx = (sw - nw) / 2; sw = nw; }
+            else { const nh = sw / r; sy = (sh - nh) * 0.3; sh = nh; }
+            const c = document.createElement('canvas'); c.width = W; c.height = H;
+            const ctx = c.getContext('2d'); ctx.imageSmoothingQuality = 'high';
+            ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H);
+            ctx.drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
+            URL.revokeObjectURL(img.src);
+            c.toBlob(b => b ? resolve(b) : reject(new Error('Não consegui processar a foto.')), 'image/jpeg', 0.86);
+          };
+          img.onerror = () => { URL.revokeObjectURL(img.src); reject(new Error('Não consegui abrir essa foto. Use JPG, PNG ou WEBP.')); };
+          img.src = URL.createObjectURL(file);
+        });
+      }
+      async function pick(file) {
+        if (!file) return;
+        if (!/^image\/(jpeg|png|webp)$/.test(file.type)) { show($('#form-msg'), 'Use uma foto JPG, PNG ou WEBP.'); return; }
+        try {
+          photoBlob = await toCard(file);
+          if (previewUrl) URL.revokeObjectURL(previewUrl);
+          previewUrl = URL.createObjectURL(photoBlob);
+          $('#pv-img').src = previewUrl; $('#pv-img').hidden = false;
+          $('#foto-name').textContent = file.name;
+          show($('#form-msg'), '');
+        } catch (err) { show($('#form-msg'), err.message); }
+      }
+      $('#foto').addEventListener('change', e => pick(e.target.files[0]));
+      const drop = $('#drop');
+      ['dragover', 'dragenter'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('over'); }));
+      ['dragleave', 'drop'].forEach(t => drop.addEventListener(t, () => drop.classList.remove('over')));
+      drop.addEventListener('drop', e => { e.preventDefault(); pick(e.dataTransfer.files[0]); });
+
+      /* ---------- Publicar ---------- */
+      $('#form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const nome = $('#nome').value.trim(), curso = $('#curso').value.trim(), faculdade = $('#faculdade').value.trim();
+        const g = document.querySelector('input[name=genero]:checked');
+        if (!photoBlob) return show($('#form-msg'), 'Escolha a foto do aluno.');
+        if (!nome || !g || !curso || !faculdade) return show($('#form-msg'), 'Preencha nome, Aprovada/Aprovado, curso e faculdade.');
+        const btn = $('#save'); btn.disabled = true; btn.textContent = 'Publicando...';
+        const path = `${crypto.randomUUID()}.jpg`;
+        try {
+          const up = await sb.storage.from('aprovados').upload(path, photoBlob, { contentType: 'image/jpeg', cacheControl: '31536000' });
+          if (up.error) throw up.error;
+          const ins = await sb.from('aprovados').insert({ nome, genero: g.value, curso, faculdade, foto_path: path });
+          if (ins.error) { await sb.storage.from('aprovados').remove([path]); throw ins.error; }
+          e.target.reset(); photoBlob = null; $('#pv-img').hidden = true; $('#foto-name').textContent = DEFAULT_HINT; sync();
+          show($('#form-msg'), `${nome} entrou no mural!`, 'ok');
+          loadList();
+        } catch (err) {
+          show($('#form-msg'), nice(err));
+        } finally { btn.disabled = false; btn.textContent = 'Publicar no mural'; }
+      });
+
+      /* ---------- Lista e remoção ---------- */
+      async function loadList() {
+        const { data, error } = await sb.from('aprovados').select('id,nome,genero,curso,faculdade,foto_path,created_at').order('created_at', { ascending: false });
+        if (error) { $('#list').innerHTML = `<li class="empty">${esc(nice(error))}</li>`; return; }
+        $('#total').textContent = data.length === 1 ? '1 aprovação' : `${data.length} aprovações`;
+        $('#list').innerHTML = data.length
+          ? data.map(a => `<li><img src="${esc(CocMural.photoUrl(a.foto_path))}" alt="" loading="lazy"><div><strong>${esc(a.nome)} · ${a.genero === 'f' ? 'Aprovada' : 'Aprovado'}</strong><span>${esc(a.curso)} · ${esc(a.faculdade)}</span></div><button class="del" type="button" data-id="${esc(a.id)}" data-path="${esc(a.foto_path)}" data-nome="${esc(a.nome)}">Remover</button></li>`).join('')
+          : '<li class="empty">Ninguém no mural ainda. Cadastre o primeiro aprovado acima.</li>';
+      }
+      $('#list').addEventListener('click', async e => {
+        const b = e.target.closest('.del'); if (!b) return;
+        if (!confirm(`Remover ${b.dataset.nome} do mural?`)) return;
+        b.disabled = true;
+        const { error } = await sb.from('aprovados').delete().eq('id', b.dataset.id);
+        if (error) { b.disabled = false; alert(nice(error)); return; }
+        await sb.storage.from('aprovados').remove([b.dataset.path]);
+        loadList();
+      });
+    }
+  </script>
+</body>
+</html>

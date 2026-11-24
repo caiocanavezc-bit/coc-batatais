@@ -129,7 +129,10 @@
     .seg-panel .seg-photo img{object-position:center 30%}
     .seg-panel .seg-copy{align-self:center;padding:clamp(28px,5vh,52px) clamp(28px,4vw,56px)}
     @media(max-width:980px){.seg-panel{grid-template-columns:1fr;gap:0;padding:0}.seg-panel .seg-photo{min-height:0;height:auto;aspect-ratio:4/3}.seg-panel .seg-copy{padding:26px 22px 30px}}
+    /* Mural dos aprovados na home: esteira de largura total abaixo do título */
+    .approved .approved-head{text-align:center}.approved .approved-head .lead{margin-inline:auto}.approved-wall{margin-top:clamp(12px,3vh,28px)}.approved .mq-empty{text-align:center}
   </style>
+  <link rel="stylesheet" href="assets/mural.css">
 </head>
 <body>
   <a class="skip" href="#conteudo">Pular para o conteúdo</a>
@@ -159,7 +162,7 @@
       <div class="study-photo reveal"><div class="media-shell" data-label="Foto: sala de aula&#10;assets/sala.jpg"><img src="assets/sala.jpg" alt="Alunos em sala de aula no COC Batatais" width="800" height="1000" loading="lazy" decoding="async"></div></div>
     </div></section>
 
-    <section class="section approved" id="aprovados"><div class="container approved-grid"><div class="approved-head reveal"><h2>Mural dos aprovados</h2><p class="lead">Alunos do COC Batatais aprovados nos vestibulares.</p><a class="btn btn-green" href="#contato" data-contact="whatsapp" data-msg="Olá! Quero saber mais sobre o Ensino Médio do COC Batatais.">Conheça o Ensino Médio</a></div><div class="wall reveal" id="wall" aria-label="Alunos aprovados"></div></div></section>
+    <section class="section approved" id="aprovados"><div class="container approved-head reveal"><h2>Mural dos aprovados</h2><p class="lead">Alunos do COC Batatais aprovados nos vestibulares.</p><a class="btn btn-green" href="aprovados.html">Ver o mural completo</a></div><div class="approved-wall reveal" id="wall" aria-label="Alunos aprovados"></div></section>
 
     <section class="section voices" id="depoimentos"><div class="container"><div class="center reveal"><h2>O que dizem as famílias</h2><p class="lead"><span class="todo">[Depoimentos reais de pais e mães, com autorização por escrito]</span></p></div><div class="voice-grid" id="voices"></div></div></section>
 
@@ -192,6 +195,8 @@
   </main>
   <a class="wa-float" href="#contato" data-contact="whatsapp" data-msg="Olá! Gostaria de agendar uma visita ao COC Batatais."><span class="wa-ico" data-icon="message"></span>Agendar visita</a>
   <footer><div class="container foot"><a class="brand" href="#inicio" aria-label="Colégio COC Batatais, voltar ao início"><img src="assets/logo/logo-coc-batatais-branco.svg" alt="" width="1244" height="440" loading="lazy" decoding="async"></a><span class="copy">© 2026 Colégio COC Batatais. Escola parceira do Sistema de Ensino COC.</span><nav class="f-links" aria-label="Rodapé"><a href="colaboradores.html">Nossa equipe</a><a href="politica-de-privacidade.html">Política de Privacidade</a><span>Desenvolvido por <a href="https://www.instagram.com/canavezz/" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Caio Canavez">Caio Canavez</a></span></nav></div></footer>
+  <script src="assets/supabase-config.js"></script>
+  <script src="assets/mural.js"></script>
   <script>
     /* ==== CONFIGURAÇÃO DA ESCOLA — preencha antes de publicar ==== */
     const CONFIG={
@@ -235,10 +240,7 @@
       ['monitor','Plataforma digital','Recursos digitais do Sistema COC para estudar na escola e em casa.'],
       ['home','Família por perto','Contato direto com as famílias sobre a rotina e o desempenho do aluno.']
     ];
-    /* Para adicionar um aprovado, inclua um item e coloque a foto em assets/aprovados/ */
-    const approvedStudents=[
-      {nome:'Maria Clara',status:'Aprovada!',curso:'Odontologia',instituicao:'UNAERP',foto:'assets/aprovados/maria-clara.jpg'}
-    ];
+    /* Aprovados: cadastrados no painel (painel-aprovados.html) e lidos do Supabase por assets/mural.js */
     const exams=[
       {fase:'1ª fase',data:'2026-11-01',meta:'Duração: até 5h'},
       {fase:'2ª fase · Dia 1',data:'2026-12-06',meta:'Duração: até 4h'},
@@ -281,7 +283,7 @@
     tabs.forEach((tab,i)=>{tab.addEventListener('click',()=>selectTab(tab));tab.addEventListener('keydown',e=>{const step={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[e.key];if(step){e.preventDefault();selectTab(tabs[(i+step+tabs.length)%tabs.length],true)}else if(e.key==='Home'){e.preventDefault();selectTab(tabs[0],true)}else if(e.key==='End'){e.preventDefault();selectTab(tabs[tabs.length-1],true)}})});
 
 
-    $('#wall').innerHTML=approvedStudents.map(a=>`<article class="polaroid"><div class="media-shell" data-label="Foto: ${a.nome}&#10;${a.foto}"><img src="${a.foto}" alt="${a.nome}, ${a.status.replace(/!/g,'').toLowerCase()} em ${a.curso} na ${a.instituicao}" width="800" height="1000" loading="lazy" decoding="async"></div><div class="pol-cap"><span class="name">${a.nome}</span><span class="pill">${a.status}</span><span class="course">${a.curso}</span><span class="inst">${a.instituicao}</span></div></article>`).join('');
+    CocMural.mount($('#wall'),{limit:30,onEmpty:el=>{el.innerHTML='<p class="mq-empty">Em breve, os aprovados de 2026 aparecem aqui.</p>'}});
 
     $('#gallery').innerHTML=spaces.map((sp,i)=>`<figure class="space${i===0?' big':''}"><div class="media-shell" data-label="Foto: ${sp.nome}&#10;${sp.foto}"><img src="${sp.foto}" alt="${sp.nome} do Colégio COC Batatais" width="800" height="600" loading="lazy" decoding="async"></div><figcaption>${sp.nome}</figcaption></figure>`).join('');
     $('#voices').innerHTML=testimonials.map(t=>`<figure class="voice reveal"><blockquote>“${todo(t.texto)}”</blockquote><figcaption><strong>${todo(t.nome)}</strong><span>${todo(t.rel)}</span></figcaption></figure>`).join('');
