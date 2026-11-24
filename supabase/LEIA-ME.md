@@ -41,3 +41,9 @@ A chave `anon public` pode ficar no site, porque quem protege os dados são as r
 - Painel: `https://SEU-SITE/painel-aprovados.html`. Ele não aparece no menu do site.
 - Cada aprovado cadastrado aparece no mural na hora, sem precisar publicar o site de novo.
 - Antes de publicar a foto de um aluno, tenha a autorização dele (ou dos pais, se for menor de idade), conforme a LGPD.
+
+## Projeto sempre ativo
+
+O plano gratuito pausa o projeto depois de 1 semana sem uso. A tarefa `.github/workflows/supabase-ativo.yml` consulta o mural a cada 3 dias para evitar isso. Se ela falhar, o GitHub avisa por e-mail; nesse caso, entre no Supabase e clique em **Restore** no projeto.
+
+Observação: o GitHub desliga tarefas agendadas de repositórios sem nenhum commit por 60 dias. Se isso acontecer, reative em **Actions > Manter o Supabase ativo > Enable workflow**.
